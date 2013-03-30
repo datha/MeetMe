@@ -2,6 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/TableLayout1"
     style="@style/MatchParent"
+    android:layout_width="wrap_content"
+    android:orientation="horizontal"
     tools:context=".LocationMap" >
 
     <TableRow
@@ -28,15 +30,22 @@
             android:textIsSelectable="false" />
     </TableRow>
 
-    <TableRow
+    <LinearLayout
         android:id="@+id/buttonRow"
-        style="@style/Background.Wrap" >
+        style="@style/Background.Wrap"
+        android:minHeight="50dp"
+        android:orientation="horizontal" >
 
         <Button
             android:id="@+id/sendLocationButton"
-            style="@style/Background.Button"
-            android:minHeight="50dp"
+            style="@style/Background.Wrap.MapButtons"
             android:text="@string/send" />
-    </TableRow>
+
+        <Button
+            android:id="@+id/backButton"
+            style="@style/Background.Wrap.MapButtons"
+            android:text="@string/back" />
+
+    </LinearLayout>
 
 </TableLayout>

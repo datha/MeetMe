@@ -97,6 +97,7 @@ public class MeetMe extends NativeMainActivity {
 		// Show everything
 		findViewById(R.id.root).setVisibility(View.VISIBLE);
 		try {
+			//Fech contact list from salesforce
 			sendRequest("SELECT Name FROM Contact");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -127,7 +128,7 @@ public class MeetMe extends NativeMainActivity {
 							"records");
 					String phone = records.getJSONObject(0).getString("Phone");
 
-					showAlert(name, phone);
+					showDialog(name, phone);
 				} catch (Exception e) {
 					onError(e);
 				}
@@ -139,17 +140,21 @@ public class MeetMe extends NativeMainActivity {
 		});
 	}
 
+	
 	private void sendRequest(String soql) throws UnsupportedEncodingException {
+		
 		RestRequest restRequest = RestRequest.getRequestForQuery(
 				getString(R.string.api_version), soql);
-
+		
 		client.sendAsync(restRequest, new AsyncRequestCallback() {
 			@Override
 			public void onSuccess(RestRequest request, RestResponse result) {
 				try {
+					//Clear list before re-populating
 					listAdapter.clear();
 					JSONArray records = result.asJSONObject().getJSONArray(
 							"records");
+					//Add contacts to list adapter
 					for (int i = 0; i < records.length(); i++) {
 						listAdapter.add(records.getJSONObject(i).getString(
 								"Name"));
@@ -157,7 +162,7 @@ public class MeetMe extends NativeMainActivity {
 					final ListView contactList = ((ListView) findViewById(R.id.contacts_list));
 					contactList
 							.setOnItemClickListener(new OnItemClickListener() {
-
+								//Fetch contact phone number on item click
 								@Override
 								public void onItemClick(AdapterView<?> parent,
 										View view, int position, long id) {
@@ -185,8 +190,11 @@ public class MeetMe extends NativeMainActivity {
 			}
 		});
 	}
-
-	private void showAlert(String message, final String phone) {
+	/*
+	 * Shows slide up dialog when Contact is clicked
+	 * 
+	 */
+	private void showDialog(String message, final String phone) {
 		final ConfirmContactDialog alert = new ConfirmContactDialog(MeetMe.this);
 		alert.setMessageTop(message);
 		alert.setMessageBottom(phone);

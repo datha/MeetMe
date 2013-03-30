@@ -15,11 +15,18 @@
         <item name="android:background">@color/lightblue</item>
     </style>
 
-    <style name="Background.Button" parent="Background">
-        <item name="android:background">@drawable/sendbuttonpressed</item>
-    </style>
     <style name="Background.Wrap" parent="Wrap">
         <item name="android:background">@color/lightblue</item>
+    </style>
+    
+    <style name="Background.Wrap.MapButtons" parent="Background.Wrap">
+        <item name="android:layout_weight">.5</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:textSize">20sp</item> 
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/sendbuttonpressed</item>
+        <item name="android:minHeight">50dp</item>
+           
     </style>
 
     <style name="DialogSlideUpAnimation">

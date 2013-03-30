@@ -12,5 +12,6 @@
 	<string name="_cancel_">" Cancel "</string>
 	<string name="map_api_key">AIzaSyD4cyCmSlGOlth2wlHULI-AcvIr4rned8M</string>
 	<string name="current_address">Current Address</string>
+	<string name="back">Back</string>
 	
 </resources>

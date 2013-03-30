@@ -63,6 +63,7 @@ public class LocationMap extends Activity implements LocationListener,
 	private double lat;
 	private double lng;
 	private TextView addressTV1;
+	private Button backButton;
 	private final static String BASE_MAP_URL = "http://maps.googleapis.com/maps/api/staticmap";
 	private static final long minTime = 20000; // Update time 20 seconds
 	private static final float minDistance = 5f;
@@ -70,21 +71,54 @@ public class LocationMap extends Activity implements LocationListener,
 	protected void onCreate(Bundle icicle) {
 
 		super.onCreate(icicle);
-		phoneNumber = getIntent().getExtras().getString("PhoneNumber");
-		phoneNumber = cleanPhoneNumber(phoneNumber);
 		setContentView(R.layout.map);
 
+		phoneNumber = getIntent().getExtras().getString("PhoneNumber");
+		phoneNumber = cleanPhoneNumber(phoneNumber);
+
+		addressTV1 = (TextView) findViewById(R.id.address1TextView);
+
+		initMapView();
+		initLocationManager();
+		initSendButton();
+		initBackButton();
+
+	}
+
+	private void initBackButton() {
+		backButton = (Button) findViewById(R.id.backButton);
+		backButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
+	}
+
+	private void initMapView() {
 		map = ((MapFragment) getFragmentManager().findFragmentById(
 				R.id.locationMap)).getMap();
 		map.setOnMarkerDragListener(this);
+
+		markerOptions = new MarkerOptions();
+	}
+
+	private void initLocationManager() {
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		criteria = new Criteria();
-		provider = locationManager.getBestProvider(criteria, true);
+		provider = locationManager.getBestProvider(criteria, true); // Only
+																	// return a
+																	// provider
+																	// if it's
+																	// enabled
+																	// will
+																	// return
+																	// one with
+																	// best
+																	// accuracy
 		locationManager.requestLocationUpdates(provider, minTime, minDistance,
 				this);
-		markerOptions = new MarkerOptions();
-		initSendButton();
-		addressTV1 = (TextView) findViewById(R.id.address1TextView);
 	}
 
 	@Override
@@ -116,10 +150,7 @@ public class LocationMap extends Activity implements LocationListener,
 	}
 
 	private String cleanPhoneNumber(String phoneNumber) {
-		phoneNumber = phoneNumber.replace("(", "");
-		phoneNumber = phoneNumber.replace(")", "");
-		phoneNumber = phoneNumber.replace("-", "");
-		phoneNumber = phoneNumber.replace(" ", "");
+		phoneNumber = phoneNumber.replaceAll("[^0-9]+", "");
 		return phoneNumber;
 	}
 
@@ -162,10 +193,7 @@ public class LocationMap extends Activity implements LocationListener,
 			double lat = latLng.latitude;
 			double lng = latLng.longitude;
 			addresses = gcd.getFromLocation(lat, lng, 1);
-			addressText = String.format("%s, %s, %s", addresses.get(0)
-					.getMaxAddressLineIndex() > 0 ? addresses.get(0)
-					.getAddressLine(0) : "", addresses.get(0).getLocality(),
-					addresses.get(0).getCountryName());
+			addressText = addresses.get(0).getAddressLine(0) +", " + addresses.get(0).getLocality(); //Get the first address and city returned,
 		} catch (IOException e) {
 			CharSequence text = "Could not get determine address";
 			int duration = Toast.LENGTH_SHORT;
@@ -213,7 +241,7 @@ public class LocationMap extends Activity implements LocationListener,
 		uriBuilder.appendQueryParameter("markers", lngLatString);
 		uriBuilder.appendQueryParameter("size", "500x300");
 		uriBuilder.appendQueryParameter("zoom", "15");
-		uriBuilder.appendQueryParameter("sensor", "false");
+		uriBuilder.appendQueryParameter("sensor", "true"); //true because I am using a sensor (network or gps) to determine position
 		uriBuilder.appendQueryParameter("key", getString(R.string.map_api_key));
 
 		return uriBuilder.build();
@@ -281,8 +309,7 @@ public class LocationMap extends Activity implements LocationListener,
 			try {
 
 				HttpClient client = new DefaultHttpClient();
-				String urlTemplate = "http://tinyurl.com/api-create.php?url=%s";
-				String uri = String.format(urlTemplate, uris[0]);
+				String uri = "http://tinyurl.com/api-create.php?url=" + uris[0];
 				HttpGet request = new HttpGet(uri);
 				HttpResponse response = client.execute(request);
 				HttpEntity entity = response.getEntity();
@@ -290,28 +317,34 @@ public class LocationMap extends Activity implements LocationListener,
 				try {
 					StatusLine statusLine = response.getStatusLine();
 					int statusCode = statusLine.getStatusCode();
+					//make sure response is ok
 					if (statusCode == HttpStatus.SC_OK) {
 						String enc = "utf-8";
 						Reader reader = new InputStreamReader(in, enc);
 						BufferedReader bufferedReader = new BufferedReader(
 								reader);
 						tinyUrl = bufferedReader.readLine();
+						//if response is empty
 						if (tinyUrl != null) {
-							System.out.println("Created Url-" + tinyUrl);
 						} else {
 							throw new IOException("empty response");
 						}
+						//if bad response throw error to show in toast
 					} else {
-						String errorTemplate = "unexpected response: %d";
-						String msg = String.format(errorTemplate, statusCode);
+						String msg = "Unexpected Response"
+								+ Integer.toString(statusCode);
 						throw new IOException(msg);
 					}
+					//close input stream
 				} finally {
 					in.close();
 				}
 			} catch (IOException e) {
 				tinyUrl = "ERROR";
-				System.out.println("tiny url error=" + e);
+				int duration = Toast.LENGTH_SHORT;
+				Toast toast = Toast.makeText(LocationMap.this, e.getMessage(),
+						duration);
+				toast.show();
 			}
 
 			return tinyUrl;
@@ -333,7 +366,9 @@ public class LocationMap extends Activity implements LocationListener,
 	public void onMarkerDragEnd(Marker marker) {
 		markerOptions.position(marker.getPosition());
 		upateAddressView(getAddress(currentLocation.getPosition()));
-		locationManager.removeUpdates(this); //stop updating when user drags icon so it doesnt change locations
+		locationManager.removeUpdates(this); // stop updating when user drags
+												// icon so it doesn't change
+												// locations
 
 	}
 
