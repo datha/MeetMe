@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.atha.dj"
+    android:installLocation="internalOnly"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+    <!-- device os versions http://developer.android.com/guide/publishing/versioning.html -->
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Used for google maps -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.SEND_SMS" >
+    </uses-permission>
+
+    <permission
+        android:name="com.atha.dj.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.atha.dj.permission.MAPS_RECEIVE" />
+
+    <application
+        android:name=".TemplateApp"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+
+        <!-- Service required for authentication -->
+        <service
+            android:name="com.salesforce.androidsdk.auth.AuthenticatorService"
+            android:exported="true"
+            android:process=":auth" >
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+        <!-- Launcher screen -->
+        <activity
+            android:name=".MeetMe"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Login activity -->
+        <activity
+            android:name="com.salesforce.androidsdk.ui.LoginActivity"
+            android:theme="@android:style/Theme.NoTitleBar" />
+
+        <!-- Passcode activity -->
+        <activity
+            android:name="com.salesforce.androidsdk.ui.PasscodeActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- Choose server activity -->
+        <activity
+            android:name="com.salesforce.androidsdk.ui.ServerPickerActivity"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.NoTitleBar" />
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyD4cyCmSlGOlth2wlHULI-AcvIr4rned8M" />
+
+        <activity android:name="LocationMap" >
+        </activity>
+    </application>
+
+</manifest>

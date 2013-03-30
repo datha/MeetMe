@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Wrap">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="MatchParent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="Background">
+        <item name="android:background">@color/lightblue</item>
+    </style>
+
+    <style name="Background.Button" parent="Background">
+        <item name="android:background">@drawable/sendbuttonpressed</item>
+    </style>
+    <style name="Background.Wrap" parent="Wrap">
+        <item name="android:background">@color/lightblue</item>
+    </style>
+
+    <style name="DialogSlideUpAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_dialog_up_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_dialog_down_to_bottom</item>
+    </style>
+
+    <style name="DialogLayout" >
+        <item name="android:textSize">25sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="DialogLayout.Button" parent="DialogLayout">
+        <item name="android:background">@drawable/alertbuttonpressed</item>
+    </style>
+
+    <style name="HeaderBackground">
+        <item name="android:background">@drawable/alertbuttonpressed</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+
+    </style>
+
+    <style name="AlertDialogCustom" parent="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+        <item name="android:windowAnimationStyle">@style/DialogSlideUpAnimation</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+</resources>

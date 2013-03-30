@@ -1,0 +1,42 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/TableLayout1"
+    style="@style/MatchParent"
+    tools:context=".LocationMap" >
+
+    <TableRow
+        android:id="@+id/mapRow"
+        style="@style/Wrap"
+        android:layout_weight=".85" >
+
+        <fragment
+            android:id="@+id/locationMap"
+            style="@style/Wrap"
+            class="com.google.android.gms.maps.MapFragment" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/addressRow"
+        style="@style/Background.Wrap" >
+
+        <TextView
+            android:id="@+id/address1TextView"
+            style="@style/HeaderBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textIsSelectable="false" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/buttonRow"
+        style="@style/Background.Wrap" >
+
+        <Button
+            android:id="@+id/sendLocationButton"
+            style="@style/Background.Button"
+            android:minHeight="50dp"
+            android:text="@string/send" />
+    </TableRow>
+
+</TableLayout>

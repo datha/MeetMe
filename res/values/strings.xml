@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name"><b>MeetMe</b></string>
+    <string name="welcome">Welcome %s</string>
+	<string name="logout_button">Logout</string>
+	<string name="fetch_contacts_button">Fetch Contacts</string>
+	<string name="fetch_accounts_button">Fetch Accounts</string>
+	<string name="clear_button">Clear</string>
+	<string name="send">Send!</string>
+	<string name="ok">OK</string>
+	<string name="cancel">Cancel</string>
+	<string name="_cancel_">" Cancel "</string>
+	<string name="map_api_key">AIzaSyD4cyCmSlGOlth2wlHULI-AcvIr4rned8M</string>
+	<string name="current_address">Current Address</string>
+	
+</resources>
